@@ -37,8 +37,27 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts',
-    'blog',
+
+    #taggit
+    'taggit',
+
+    #applications
+        # 'accounts',
+        # 'blog',
+    'accounts.apps.AccountsConfig',
+    'blog.apps.BlogConfig',
+    
+    #packages
+    'sorl.thumbnail',
+    'django.contrib.humanize',
+    'django_extensions',
+    #'django.contrib.sites',
+    'django.contrib.sitemaps',
+    'robots',
+    'ckeditor', # CKEditor config
+    'ckeditor_uploader', # CKEditor media uploader
+    'captcha',
+    'compressor',
 ]
 
 MIDDLEWARE = [
