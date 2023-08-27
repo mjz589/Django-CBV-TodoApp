@@ -7,8 +7,14 @@
     <title>Document</title>
 </head>
 <body>
-    index
-    <p>{{name}}</p>
-    <h1>{{posts}}</h1>
+    Nah
+    {% for post in object_list %}
+    <div>
+        <h2>
+            {{ post.title}}
+            {{post.content}}
+        </h2>
+    </div>
+    {% endfor %}
 </body>
 </html>
