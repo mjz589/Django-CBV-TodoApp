@@ -6,7 +6,13 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from django.core.exceptions import ValidationError
 from blog.formatChecker import ContentTypeRestrictedFileField
 
+from django.contrib.auth import get_user_model
+# getting user model object
+User = get_user_model()
+
+
 # Create your models here.
+
 
 class Category(models.Model):
     name = models.CharField(max_length=60)
@@ -39,13 +45,13 @@ class Post(models.Model):
                                               content_types=['video/mp4'],
                                               max_upload_size=20971520,blank=True, null=True, verbose_name='video')
     
-    category = models.ManyToManyField(Category, on_delete=models.SET_NULL,null=True)
+    category = models.ManyToManyField(Category)
     tags = TaggableManager()
     counted_views = models.PositiveIntegerField(default=0)
 
     counted_likes = models.PositiveIntegerField(default=0)
 
-    publish_status = models.BooleanField(default=False, )
+    status = models.BooleanField(default=False, )
     published_date = models.DateTimeField(null=True)
     
     created_date = models.DateTimeField(auto_now_add=True)
