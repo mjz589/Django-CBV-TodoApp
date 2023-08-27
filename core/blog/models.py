@@ -16,9 +16,9 @@ class Category(models.Model):
         return self.name
 
 class Post(models.Model):
-    ...
-    #this is A class to define posts for blog app
-    ...
+    """
+    this is A class to define posts for blog app
+    """
     def validate_image(fieldfile_obj):
         filesize = fieldfile_obj.file.size
         megabyte_limit = 2.0
