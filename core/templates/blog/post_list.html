@@ -9,14 +9,15 @@
 <body>
     Nah
     {% for post in posts %}
-    <div>
-        <h2>
-            {{ post.title|safe}} </h2>
-
-        
-       
+    <div style="margin: auto; align-self: center; padding: 2%; background-color: rgb(207, 179, 233);">
+        <h2>{{ post.title|safe}} </h2>
+        <h4>{{post.content|safe}}</h4>
     </div>
-    {{post.content|safe}}
+    ----------------------------------------------------------------
+    {% endfor %}
+
+    {% for i in pages %}
+            <li {% if page_obj.number == i %} class="active" {% endif %}><a href="/car?ordering={{ current_order }}&page={{i}}">{{i}}</a></li>
     {% endfor %}
 </body>
 </html>
