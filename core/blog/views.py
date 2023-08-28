@@ -1,8 +1,10 @@
 from django.shortcuts import render
 
 from django.views.generic.base import TemplateView ,RedirectView
-from django.views.generic import ListView
+from django.views.generic import ListView, FormView, CreateView, UpdateView, DeleteView
 from .models import *
+from .forms import *
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
 
@@ -24,7 +26,7 @@ class IndexView(TemplateView):
         context["posts"] = Post.objects.all()
         return context
     
-class PostList(ListView):
+class PostList(ListView,LoginRequiredMixin):
     """
     >>>> model, queryset and def get_queryset do the same thing (fetch data from model/database) <<<<
     # model = Post
@@ -58,4 +60,38 @@ class PostList(ListView):
         return context
     
 
-    
+"""  
+class PostCreateView(FormView):
+    template_name = 'contact.html'
+    form_class = PostForm
+    success_url = '/blog/post/'
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+"""  
+
+# create a new post ../blog/post_form.html
+class PostCreateView(CreateView):
+    model = Post
+    # fields = ['author', 'title', 'content', 'status', 'category', 'published_date']
+    form_class = PostForm # the upper line does the same job but this line fetchs form from forms.py
+    success_url = '/blog/post/'
+
+    # automatically detect author
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+
+        return super().form_valid(form)
+
+# edit/update a new post ../blog/post_form.html
+class PostEditView(UpdateView):
+    model = Post
+    form_class = PostForm
+    success_url = '/blog/post/'
+
+# delete a post ../blog/post_confirm_delete.html
+class PostDeleteView(DeleteView):
+    model = Post
+    success_url = '/blog/post/'
+

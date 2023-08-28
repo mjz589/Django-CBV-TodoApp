@@ -12,6 +12,12 @@
     <div style="margin: auto; align-self: center; padding: 2%; background-color: rgb(207, 179, 233);">
         <h2>{{ post.title|safe}} </h2>
         <h4>{{post.content|safe}}</h4>
+        <a href="{% url 'blog:post-edit' pk=post.id %}">
+            <h2>edit</h2>
+        </a>
+        <a href="{% url 'blog:post-delete' pk=post.id %}">
+            <h3>delete</h3>
+        </a>
     </div>
     ----------------------------------------------------------------
     {% endfor %}

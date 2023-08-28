@@ -25,7 +25,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('blog/', include('blog.urls')),
     path('', include('accounts.urls')),
-   
+    path('accounts/', include('django.contrib.auth.urls')),
+    
     re_path(r'^robots\.txt', include('robots.urls')),
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls')), # The CKEditor path
 ] 

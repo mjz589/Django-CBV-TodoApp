@@ -10,7 +10,12 @@ urlpatterns = [
     # path ('about/', TemplateView.as_view(template_name='about.html',extra_context={"name": "alias"}),
     path ('cbv-index/', IndexView.as_view(), name='cbv-index' ),
     path ('go-to-index/', RedirectView.as_view(pattern_name="blog:cbv-index"), name='redirect-to-index' ),
+    
+    
     path ('post/', PostList.as_view(), name='post-list' ),
+    path('post/create/', PostCreateView.as_view(), name='post-create'),
+    path('post/<int:pk>/edit/', PostEditView.as_view(), name='post-edit'),
+    path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
     # path('' , blog_view, name='index'),
     # path('<int:pid>', blog_single_view, name='single'),
     # path('category/<str:cat_name>' , blog_view, name='category'),
