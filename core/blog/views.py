@@ -25,5 +25,17 @@ class IndexView(TemplateView):
         return context
     
 class PostList(ListView):
-    model = Post
+    """
+    >>>> model, queryset and def get_queryset do the same thing (fetch data from model/database) <<<<
+    # model = Post
+    # queryset = Post.objects.all()
+    """
+    # if you don't like the name of object_list for your objects:
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        posts = Post.objects.filter(status=True)
+        return posts
+    
+
     

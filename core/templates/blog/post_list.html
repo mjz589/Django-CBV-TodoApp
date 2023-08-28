@@ -8,13 +8,15 @@
 </head>
 <body>
     Nah
-    {% for post in object_list %}
+    {% for post in posts %}
     <div>
         <h2>
-            {{ post.title}}
-            {{post.content}}
-        </h2>
+            {{ post.title|safe}} </h2>
+
+        
+       
     </div>
+    {{post.content|safe}}
     {% endfor %}
 </body>
 </html>
