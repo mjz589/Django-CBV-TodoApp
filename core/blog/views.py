@@ -26,7 +26,7 @@ class IndexView(TemplateView):
         context["posts"] = Post.objects.all()
         return context
     
-class PostList(ListView,LoginRequiredMixin):
+class PostList(LoginRequiredMixin, ListView):
     """
     >>>> model, queryset and def get_queryset do the same thing (fetch data from model/database) <<<<
     # model = Post
@@ -72,7 +72,7 @@ class PostCreateView(FormView):
 """  
 
 # create a new post ../blog/post_form.html
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     # fields = ['author', 'title', 'content', 'status', 'category', 'published_date']
     form_class = PostForm # the upper line does the same job but this line fetchs form from forms.py
@@ -85,13 +85,13 @@ class PostCreateView(CreateView):
         return super().form_valid(form)
 
 # edit/update a new post ../blog/post_form.html
-class PostEditView(UpdateView):
+class PostEditView(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
     success_url = '/blog/post/'
 
 # delete a post ../blog/post_confirm_delete.html
-class PostDeleteView(DeleteView):
+class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     success_url = '/blog/post/'
 
