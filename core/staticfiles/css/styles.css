@@ -1,0 +1,29 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .todo-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .todo-item {
+    margin-bottom: 10px;
+  }
+  
+  .todo-item input[type="checkbox"] {
+    margin-right: 5px;
+  }
+  
+  .todo-item label {
+    display: inline-block;
+    vertical-align: middle;
+    transition: text-decoration 0.2s ease-in-out;
+  }
+  
+  .todo-item input[type="checkbox"]:checked + label {
+    text-decoration: line-through;
+  }
