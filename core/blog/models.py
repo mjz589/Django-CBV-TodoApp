@@ -6,9 +6,11 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from django.core.exceptions import ValidationError
 from blog.formatChecker import ContentTypeRestrictedFileField
 
-from django.contrib.auth import get_user_model
-# getting user model object
-User = get_user_model()
+
+# from accounts.models import Profile
+# from django.contrib.auth import get_user_model
+# --- getting user model object ---
+# User = get_user_model()
 
 
 # Create your models here.
@@ -33,7 +35,7 @@ class Post(models.Model):
     image = models.ImageField(upload_to='blog/', default='blog/default.jpg', validators=[validate_image],
                                null=True, blank=True)
     
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    author = models.ForeignKey('accounts.profile', on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=100)
     summary = models.TextField(blank=True)
     content = RichTextUploadingField() # CKEditor Rich Text Field

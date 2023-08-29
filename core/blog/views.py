@@ -5,6 +5,7 @@ from django.views.generic import ListView, FormView, CreateView, UpdateView, Del
 from .models import *
 from .forms import *
 from django.contrib.auth.mixins import LoginRequiredMixin
+from accounts.models import Profile
 # Create your views here.
 
 
@@ -80,8 +81,9 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
     # automatically detect author
     def form_valid(self, form):
-        form.instance.author = self.request.user
-
+        
+        profile = Profile.objects.get(user=self.request.user)
+        form.instance.author = profile
         return super().form_valid(form)
 
 # edit/update a new post ../blog/post_form.html
