@@ -1,4 +1,3 @@
-from typing import Any
 from django.db import models
 from django.shortcuts import render, redirect
 
@@ -21,12 +20,13 @@ from django.urls import reverse_lazy
 class TaskList(LoginRequiredMixin, ListView):
     model = Task
     template_name = 'todo/task_list.html'
-    
+    context_object_name = "tasks"
+
     def get_queryset(self):
-        return self.model.objects.filter(user=self.request.user)
-    
-    context_object_name = 'tasks'
-    paginate_by = 4
+        profile = Profile.objects.get(user=self.request.user)
+        return self.model.objects.filter(user=profile)
+
+    paginate_by = 10
     
     def get_context_data(self, **kwargs):
         context = super(TaskList, self).get_context_data(**kwargs)
@@ -45,52 +45,78 @@ class TaskList(LoginRequiredMixin, ListView):
         else:  # case 3
             pages = [x for x in range(page_no - 2, page_no + 3)]
 
-        context.update({'pages': pages})
+        # previous page and first page
+        if page_no == 1 :
+            previous_page = 1
+            first_page = 1
+        else:
+            previous_page = pages[page_no-1] -1
+            first_page = pages[0]
+
+        # next page and last page
+        if page_no == pages[-1] :
+            next_page = page_no    
+            last_page = 1
+        else: # page_no ==1  , pages[page_no] == 2 , pages[page_no] +1 = 3
+            next_page = pages[page_no-1] + 1 
+            last_page = pages[-1]
+        
+        context.update({'pages': pages ,
+                        'first_page': first_page,
+                        'last_page': last_page,
+                        'previous_page': previous_page,
+                        'next_page': next_page,
+                        'current_page' : page_no } )
         return context
-    
+
 
 # create a task ../todo/task_form.html
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
     form_class = CreateTaskForm
-    success_url = reverse_lazy("task_list")
-    template_name = 'todo/task_create.html'
+    success_url = reverse_lazy("todo:task_list")
+    template_name = 'todo/task_list.html'
+
     # automatically detect author
     def form_valid(self, form):
         profile = Profile.objects.get(user=self.request.user)
-        form.instance.author = profile
+        form.instance.user = profile
         return super().form_valid(form)
-
-
-# update/edit a task ../todo/task_form.html
-class TaskUpdate(LoginRequiredMixin, UpdateView):
-    model = Task
-    context_object_name = "task"
-    template_name = 'todo/task_update.html'
-    success_url = reverse_lazy("task_list")
-    form_class = UpdateTaskForm
+    
     
 
+# update/edit a task ../todo/task_update.html
+class TaskUpdate(LoginRequiredMixin, UpdateView):
+    model = Task
+    template_name = 'todo/task_update.html'
+    success_url = "" # reverse_lazy("todo:task_list")
+    form_class = UpdateTaskForm
+    # automatically detect author
+    def form_valid(self, form):
+        profile = Profile.objects.get(user=self.request.user)
+        form.instance.user = profile
+        return super().form_valid(form)
+    
 
 # delete  a task ../todo/task_confirm_delete.html
 class TaskDelete(LoginRequiredMixin, DeleteView):
     model = Task
     context_object_name = "task"
-    template_name = 'todo/task_confirm_delete.html'
-    success_url = reverse_lazy("task_list")
+    success_url = reverse_lazy("todo:task_list")
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
-    
+        
     def get_queryset(self):
-        return self.model.objects.filter(user=self.request.user)
+        profile = Profile.objects.get(user=self.request.user)
+        return self.model.objects.filter(user=profile)
 
 
 
 # mark a task as completed 
 class TaskComplete(LoginRequiredMixin, View):
     model = Task
-    success_url = reverse_lazy("task_list")
+    success_url = reverse_lazy("todo:task_list")
     context_object_name = "task"
 
     def get(self, request, *args, **kwargs):

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
         # 'blog',
     'accounts.apps.AccountsConfig',
     'blog.apps.BlogConfig',
+    'todo.apps.TodoConfig',
     
     #packages
     'sorl.thumbnail',

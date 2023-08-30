@@ -1,10 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.urls import reverse
-from taggit.managers import TaggableManager
-from ckeditor_uploader.fields import RichTextUploadingField 
-from django.core.exceptions import ValidationError
-from blog.formatChecker import ContentTypeRestrictedFileField
+# from taggit.managers import TaggableManager
+# from ckeditor_uploader.fields import RichTextUploadingField 
+# from django.core.exceptions import ValidationError
+# from blog.formatChecker import ContentTypeRestrictedFileField
 
 
 # from accounts.models import Profile
@@ -15,9 +15,9 @@ from blog.formatChecker import ContentTypeRestrictedFileField
 
 # Create your models here.
 
-
+# user comes from accounts.Profile
 class Task(models.Model):
-    user = models.ForeignKey('account.Profile', on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey('accounts.Profile', on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=255)
     complete = models.BooleanField(default=False)
     

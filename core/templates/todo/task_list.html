@@ -1,29 +1,143 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task List</title>
-</head>
-<body>
-    {% for task in tasks %}
-    <div style="margin: auto; align-self: center; padding: 2%; background-color: rgb(207, 179, 233);">
-        <h2>{{ task.title|safe}} </h2>
-        <h4>{{task.content|safe}}</h4>
-        <h6>{{ task.author.first_name }} {{ task.author.last_name }}</h6>
-        <a href="{% url 'blog:task-edit' pk=task.id %}">
-            <h2>edit</h2>
-        </a>
-        <a href="{% url 'blog:task-delete' pk=task.id %}">
-            <h3>delete</h3>
-        </a>
-    </div>
-    ----------------------------------------------------------------
-    {% endfor %}
+{% extends 'base.html' %}
+{% load static %}
 
-    {% for i in pages %}
-            <li {% if page_obj.number == i %} class="active" {% endif %}><a href="/car?ordering={{ current_order }}&page={{i}}">{{i}}</a></li>
-    {% endfor %}
+<!-- <title>  -->
+{% block title %} Todo List {% endblock %}
+<!-- <extra css>-->
+{% block extra_css %}{% endblock %}
+
+<!-- <body> -->
+{% block content %}
+
+
+
+
+
+
+<body class="body">
+    <div class="container">
+        <div class="today"></div>
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 col-xs-6 col-xs-offset-3">
+                <div class="add-control">
+                    <div class="form-group has-feedback">
+                        <form method="post" action="{% url 'todo:create_task' %}">
+                            {% csrf_token %}
+
+                            <input type="text" class="form-control" name="title" placeholder="✍️ Add task...">
+                            <!-- <i class="fa fa-plus form-control-feedback add-btn"  title="Add item"></i> -->
+                            <button type="submit" class=" form-control-feedback add-btn" title="Add item"
+                                style="background-color: lightgray;align-content: center;color: rgb(255, 255, 255);font-size:x-small; padding: 0%; ">
+                                <i class="fa fa-plus form-control-feedback add-btn"
+                                    style="padding-left: 10%;align-content: center;" title="Add item"></i></button>
+                       
+                        </form>
+                    </div>
+                </div>
+                <p class="err text-danger text-center hidden"><i class="fa fa-warning"></i> Oops! Please, enter name
+                    item</p>
+                <p class="no-items text-muted text-center hidden"><i class="fa fa-ban"></i></p>
+                <ul class="todo-list">
+                    <ul class="todo-list ui-sortable">
+                        {% for task in tasks %}
+                        <li class="">
+                            <div class="checkbox">
+                                <a href="{% url 'todo:update_task' pk=task.id %}"><span class="close" style="margin-right: 22px ;width: 12px;
+                                height: 16px;"><svg xmlns="http://www.w3.org/2000/svg" height="1em"
+                                        viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                        <path
+                                            d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z" />
+                                    </svg></span></a>
+                                <a href="{% url 'todo:delete_task' pk=task.id %}"><span class="close"><i class="fa fa-times"></i></span></a>
+                                <label><span class="checkbox-mask"></span><input type="checkbox">{{task.title}}</label>
+                                <!-- <a href="{% url 'todo:update_task' pk=task.id %}">
+                                    <h2>edit</h2>
+                                </a>
+                                <a href="{% url 'todo:delete_task' pk=task.id %}">
+                                    <h3>delete</h3>
+                                </a> -->
+                            </div>
+                        </li>
+                        {% endfor %}
+
+                    </ul>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+    </section>
+    </main>
+    </div>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
+    <!-- <script src="js/index.js"></script> -->
+    <script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
 </body>
-</html>
+
+
+
+
+<!-- pagination -->
+<div class="container">
+
+    <div class="pagination p1">
+        <ul>
+            <h4>Pages</h4>
+
+            <!-- previous and first page -->
+            {% if current_page != 1 %}
+            <a href="/?page={{previous_page}}">
+                <li>
+                    < </li>
+            </a>
+
+            {% if current_page != 2 %}
+            <a href="/?page={{first_page}}">
+                <li> First </li>
+            </a>
+            {% endif %}
+            {% endif %}
+            <!-- end -->
+
+            <!-- pagination numbers -->
+            {% for i in pages %}
+            {% if page_obj.number == i %}
+            <a class="is-active" href="/?page={{i}}">
+                <li>{{i}}</li>
+            </a>
+            {% else %}
+            <a href="/?page={{i}}">
+                <li>{{i}}</li>
+            </a>
+            {% endif %}
+            {% endfor %}
+            <!-- end -->
+
+            <!-- next and last page -->
+            {% if current_page != next_page %}
+            <a href="/?page={{next_page}}">
+                <li>></li>
+            </a>
+            {% if last_page != 1 %}
+            <a href="/?page={{last_page}}">
+                <li> Last </li>
+            </a>
+            {% endif %}
+
+            {% endif %}
+            <!-- end -->
+
+        </ul>
+    </div>
+</div>
+
+
+
+{% endblock %}
+<!-- </body> -->
+
+<!-- <extra js>-->
+{% block extra_js %}{% endblock %}
