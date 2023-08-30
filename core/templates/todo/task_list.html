@@ -79,7 +79,7 @@
 
 
 
-
+{% if page_obj.has_other_pages %}
 <!-- pagination -->
 <div class="container">
 
@@ -88,13 +88,13 @@
             <h4>Pages</h4>
 
             <!-- previous and first page -->
-            {% if current_page != 1 %}
+            {% if current_page.number != 1 %}
             <a href="/?page={{previous_page}}">
                 <li>
                     < </li>
             </a>
 
-            {% if current_page != 2 %}
+            {% if current_page.number != 2 %}
             <a href="/?page={{first_page}}">
                 <li> First </li>
             </a>
@@ -117,7 +117,7 @@
             <!-- end -->
 
             <!-- next and last page -->
-            {% if current_page != next_page %}
+            {% if current_page.number != next_page %}
             <a href="/?page={{next_page}}">
                 <li>></li>
             </a>
@@ -133,7 +133,7 @@
         </ul>
     </div>
 </div>
-
+{% endif %}
 
 
 {% endblock %}

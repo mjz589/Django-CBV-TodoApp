@@ -26,7 +26,7 @@ class TaskList(LoginRequiredMixin, ListView):
         profile = Profile.objects.get(user=self.request.user)
         return self.model.objects.filter(user=profile)
 
-    paginate_by = 10
+    paginate_by = 7
     
     def get_context_data(self, **kwargs):
         context = super(TaskList, self).get_context_data(**kwargs)
@@ -60,13 +60,14 @@ class TaskList(LoginRequiredMixin, ListView):
         else: # page_no ==1  , pages[page_no] == 2 , pages[page_no] +1 = 3
             next_page = pages[page_no-1] + 1 
             last_page = pages[-1]
-        
+        page_count = len(pages)
         context.update({'pages': pages ,
                         'first_page': first_page,
                         'last_page': last_page,
                         'previous_page': previous_page,
                         'next_page': next_page,
-                        'current_page' : page_no } )
+                        # 'current_page' : page_no, 
+                        'page_count' : page_count,} )
         return context
 
 
@@ -89,7 +90,7 @@ class TaskCreate(LoginRequiredMixin, CreateView):
 class TaskUpdate(LoginRequiredMixin, UpdateView):
     model = Task
     template_name = 'todo/task_update.html'
-    success_url = "" # reverse_lazy("todo:task_list")
+    success_url = reverse_lazy("todo:task_list")
     form_class = UpdateTaskForm
     # automatically detect author
     def form_valid(self, form):
