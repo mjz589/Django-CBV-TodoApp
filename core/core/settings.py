@@ -48,7 +48,11 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'todo.apps.TodoConfig',
     
+    #rest framework
+    'rest_framework',
+    
     #packages
+    
     'sorl.thumbnail',
     'django.contrib.humanize',
     'django_extensions',
