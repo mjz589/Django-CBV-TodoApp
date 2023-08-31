@@ -6,15 +6,26 @@ from ...models import Task
 # from rest_framework import status
 from django.shortcuts import get_object_or_404
 
-@api_view()
+@api_view(['GET', 'POST'])
 def taskList(request):
-    tasks = Task.objects.all()
-    serializer = TaskSerializer(tasks, many=True)
-    return Response(serializer.data)
-
-@api_view()
+    if request.method == 'GET':
+        tasks = Task.objects.all()
+        serializer = TaskSerializer(tasks, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = TaskSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+    
+@api_view(['GET', 'PUT'])
 def taskDetail(request,id):
     task = get_object_or_404(Task, pk=id)
-    serializer = TaskSerializer(task)
-    return Response(serializer.data)
-
+    if request.method == 'GET':
+        serializer = TaskSerializer(task)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = TaskSerializer(task, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)

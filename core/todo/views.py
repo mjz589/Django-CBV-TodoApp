@@ -61,13 +61,13 @@ class TaskList(LoginRequiredMixin, ListView):
             next_page = pages[page_no-1] + 1 
             last_page = pages[-1]
         page_count = len(pages)
-        context.update({'pages': pages ,
-                        'first_page': first_page,
-                        'last_page': last_page,
-                        'previous_page': previous_page,
-                        'next_page': next_page,
-                        # 'current_page' : page_no, 
-                        'page_count' : page_count,} )
+        context.update({'pages':pages,
+                        'first_page':first_page,
+                        'last_page':last_page,
+                        'previous_page':previous_page,
+                        'next_page':next_page,
+                        'current_page':page_no, 
+                        'page_count':page_count } )
         return context
 
 
