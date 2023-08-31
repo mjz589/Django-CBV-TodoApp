@@ -42,17 +42,13 @@ INSTALLED_APPS = [
     'taggit',
 
     #applications
-        # 'accounts',
-        # 'blog',
     'accounts.apps.AccountsConfig',
-    'blog.apps.BlogConfig',
     'todo.apps.TodoConfig',
     
     #rest framework
     'rest_framework',
     
     #packages
-    
     'sorl.thumbnail',
     'django.contrib.humanize',
     'django_extensions',
@@ -154,7 +150,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tehran'
 
 USE_I18N = True
 
