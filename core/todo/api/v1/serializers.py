@@ -7,6 +7,7 @@ from ...models import Task
 #     complete = serializers.BooleanField()
 
 class TaskSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = Task
         fields = ('id', 'user', 'title', 'complete',)

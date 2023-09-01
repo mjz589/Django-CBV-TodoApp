@@ -4,6 +4,7 @@ from . import views
 app_name  = 'api-v1'
 
 urlpatterns = [
-    path("task/", views.taskList, name="task-list"),
+    # path("task/", views.taskList, name="task-list"),
+    path("task/", views.TaskList.as_view(), name="task-list"),
     path("task/<int:id>/", views.taskDetail, name="task-detail"),
 ]

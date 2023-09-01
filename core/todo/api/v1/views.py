@@ -8,20 +8,47 @@ from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticatedOrReadOnly , IsAuthenticated
 from accounts.models import Profile
 
+# class-based views for api
+from rest_framework.views import APIView
+
+# # list of tasks and create a new one
+# @api_view(['GET', 'POST'])
+# @permission_classes([IsAuthenticated])
+# def taskList(request):
+#     profile = Profile.objects.get(user=request.user.id)
+#     if request.method == 'GET':
+#         tasks = Task.objects.filter(user=profile.id)
+#         serializer = TaskSerializer(tasks, many=True)
+#         return Response(serializer.data)
+#     elif request.method == 'POST':
+#         serializer = TaskSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(serializer.data)
+
+
 # list of tasks and create a new one
-@api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])
-def taskList(request):
-    profile = Profile.objects.get(user=request.user.id)
-    if request.method == 'GET':
+class TaskList(APIView):
+    
+    def get(self, request, *args, **kwargs):
+        # retrieve a list of tasks
+        profile = Profile.objects.get(user=self.request.user.id)
         tasks = Task.objects.filter(user=profile.id)
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
-    elif request.method == 'POST':
+    
+    def post(self, request, *args, **kwargs):
+        # creating a new task with the given data
+
+        # automatically detect user
+        profile = Profile.objects.get(user=self.request.user.id)
+        request.data['user'] = profile.id
+
         serializer = TaskSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+        
 
 
 # show a single task and edit or delete it
