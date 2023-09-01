@@ -9,20 +9,38 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly , IsAuthenticat
 from accounts.models import Profile
 
 # class-based views for api
-from rest_framework.views import APIView
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import viewsets
-
+from rest_framework.decorators import action
+from rest_framework import serializers
 
 class TaskModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = TaskSerializer
+
+    def perform_create(self, serializer):
+        # user must automatically be provided and not be written by users
+        profile = Profile.objects.get(user=self.request.user.id)
+        serializer.save(user=profile)
+
     def get_queryset(self):
         # define the queryset wanted
         profile = Profile.objects.get(user=self.request.user.id)
         queryset = Task.objects.filter(user=profile.id)
         return queryset
-"""   
+    # extra actions
+    @action(methods=["GET",],detail=False)
+    def get_ok(self, request):
+        return Response({'detail':'extra actions -OK-'})
+
+
+
+
+
+
+
+"""   --- GENERIC views ---
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+
 class TaskList(ListCreateAPIView):
     # list of tasks and create a new one
     permission_classes = [IsAuthenticated]
@@ -32,6 +50,7 @@ class TaskList(ListCreateAPIView):
         profile = Profile.objects.get(user=self.request.user.id)
         queryset = Task.objects.filter(user=profile.id)
         return queryset
+        
 class TaskDetail(RetrieveUpdateDestroyAPIView):
     # show a single task and edit or delete it
     permission_classes = [IsAuthenticated]
@@ -44,7 +63,14 @@ class TaskDetail(RetrieveUpdateDestroyAPIView):
 """
 
     
-"""
+
+
+
+
+
+"""  --- APIView ---
+from rest_framework.views import APIView
+
 # list of tasks and create a new one
 class TaskList(APIView):
     permission_classes = [IsAuthenticated]
@@ -68,10 +94,7 @@ class TaskList(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
-"""        
 
-
-"""
 # show a single task and edit or delete it
 class TaskDetail(APIView):
     permission_classes = [IsAuthenticated]
@@ -100,6 +123,13 @@ class TaskDetail(APIView):
         task.delete()
         return Response({'detail':'item deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
 """ 
+
+
+
+
+
+
+
 
 
 #  Example for Function-Based View
