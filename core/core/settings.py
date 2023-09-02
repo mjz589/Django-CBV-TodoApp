@@ -179,14 +179,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # User Manager Configuration
 AUTH_USER_MODEL = 'accounts.User'
 
-# REST framework configuration
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-    ],
-    # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'] ---we do it manually---
-}
