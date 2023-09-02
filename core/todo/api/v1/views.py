@@ -14,15 +14,21 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly , IsAuthenticat
 from rest_framework import serializers
 from .permissions import IsOwnerOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter
+from rest_framework.filters import SearchFilter, OrderingFilter
+from .paginations import DefaultPagination
+
 
 class TaskModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = TaskSerializer
-    filter_backends = [DjangoFilterBackend,SearchFilter]
+    # filters
+    filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
     filterset_fields = ['complete',]
     search_fields = ['title',]
-
+    ordering_fields = ['created_date']
+    # pagination
+    pagination_class = DefaultPagination
+    
     """ --- we used another method for user providing ---
     def perform_create(self, serializer):  
         # user must automatically be provided and not be written by users
