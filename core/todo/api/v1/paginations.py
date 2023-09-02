@@ -13,7 +13,6 @@ class DefaultPagination(PageNumberPagination):
             'total_pages': self.page.paginator.num_pages,
             'results': data
         })
-    
 # class StandardResultsSetPagination(PageNumberPagination):
 #     page_size = 100
 #     page_size_query_param = 'page_size'
