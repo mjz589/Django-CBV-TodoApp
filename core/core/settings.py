@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     #rest framework
     'rest_framework',
     'django_filters',
+    'drf_yasg',
     
     
     #packages
