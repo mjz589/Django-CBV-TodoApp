@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     #rest framework
     'rest_framework',
     'django_filters',
-
+    
+    
     #packages
     'sorl.thumbnail',
     'django.contrib.humanize',
