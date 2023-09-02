@@ -20,6 +20,7 @@ from .paginations import DefaultPagination
 class TaskModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = TaskSerializer
+    # filters
     filter_backends = [DjangoFilterBackend,SearchFilter, OrderingFilter]
     filterset_fields = ['complete',]
     search_fields = ['title',]
