@@ -5,22 +5,29 @@ from ...models import Task
 # or instead of ...models you can point models.py like this: todo.models
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-from rest_framework.permissions import IsAuthenticatedOrReadOnly , IsAuthenticated
 from accounts.models import Profile
 
 # class-based views for api
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticatedOrReadOnly , IsAuthenticated
 from rest_framework import serializers
+from .permissions import IsOwnerOrReadOnly
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
 
 class TaskModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = TaskSerializer
+    filter_backends = [DjangoFilterBackend,SearchFilter]
+    filterset_fields = ['complete',]
+    search_fields = ['title',]
 
-    def perform_create(self, serializer):
+    """ --- we used another method for user providing ---
+    def perform_create(self, serializer):  
         # user must automatically be provided and not be written by users
         profile = Profile.objects.get(user=self.request.user.id)
-        serializer.save(user=profile)
+        serializer.save(user=profile) """
 
     def get_queryset(self):
         # define the queryset wanted
