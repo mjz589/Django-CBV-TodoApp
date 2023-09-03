@@ -5,7 +5,8 @@ from django.core import exceptions
 # custom AuthTokenSerializer
 from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
-
+# custom jwt
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class RegistrationSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(max_length=255, write_only=True)
@@ -68,3 +69,12 @@ class CustomAuthTokenSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
+
+
+# custom jwt create
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        validated_data = super().validate(attrs)
+        validated_data['email'] = self.user.email
+        validated_data['user_id'] = self.user.id 
+        return validated_data
