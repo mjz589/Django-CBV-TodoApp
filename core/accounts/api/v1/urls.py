@@ -13,6 +13,7 @@ urlpatterns = [
     path('registration/', views.RegistrationApiView.as_view(), name='registration'),
 
     # change password
+    path('change-password/', views.ChangePasswordApiView.as_view(), name='change-password'),
     # reset password
     # login/logout token
     path('token/login/', views.CustomAuthToken.as_view(), name='token-login'),
