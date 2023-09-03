@@ -1,4 +1,6 @@
-from django.urls import path
+<<<<<<< HEAD
+from django.urls import path, include
+>>>>>>> b76b0d63b0390cb65c353e50b5d3ddcc65545c6e
 from .views import *
 
 
@@ -10,6 +12,9 @@ urlpatterns = [
     # path('signup' , signup_view, name='signup'),
     # path('forget-password/',forget_password_view, name='forget-password'),
     # path('reset-password/<token>/', reset_password_view, name='reset-password'),
+    
+    path('', include('django.contrib.auth.urls')),
+    path('api/v1/', include('accounts.api.v1.urls')),
 ]
 
 
