@@ -4,7 +4,7 @@ from rest_framework import status
 from .serializers import RegistrationSerializer
 
 
-class RegistrationAPIview(generics.GenericAPIView):
+class RegistrationApiView(generics.GenericAPIView):
     serializer_class = RegistrationSerializer
 
     def post(self, request, *args, **kwargs):
@@ -12,6 +12,9 @@ class RegistrationAPIview(generics.GenericAPIView):
         if serializer.is_valid():
             serializer.save()
             data ={
+                'detail' : 'completed registration',
                 'email': serializer.validated_data['email'],
+                
             }
             return Response(data, status.HTTP_201_CREATED)
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)

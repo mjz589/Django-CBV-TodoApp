@@ -6,7 +6,7 @@ app_name  = 'accounts'
 
 urlpatterns = [
     # registration
-    path('registration/', views.RegistrationAPIview.as_view(), name='registration')
+    path('registration/', views.RegistrationApiView.as_view(), name='registration')
 
     # change password
     # reset password
