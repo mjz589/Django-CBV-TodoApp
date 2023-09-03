@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 from django.urls import path, include
->>>>>>> b76b0d63b0390cb65c353e50b5d3ddcc65545c6e
 from .views import *
 
 
