@@ -48,7 +48,9 @@ INSTALLED_APPS = [
     #rest framework
     'rest_framework',
     'django_filters',
+    # rest framework token and jwt
     'rest_framework.authtoken',
+    'rest_framework_simplejwt',
     'drf_yasg',
     
     #packages
@@ -192,6 +194,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'] ---we do it manually---
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination', ---we do it manually---
