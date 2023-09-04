@@ -45,6 +45,8 @@ class TaskSerializer(serializers.ModelSerializer):
         validated_data['user'] = Profile.objects.get(user__id = self.context.get('request').user.id )
         return super().create(validated_data)
     
+    
+    
 
     class Meta:
         model = Task

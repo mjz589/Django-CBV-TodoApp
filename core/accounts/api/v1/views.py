@@ -18,6 +18,9 @@ from django.contrib.auth import get_user_model
 # profile
 from ...models import Profile
 from django.shortcuts import get_object_or_404
+# email
+from django.core.mail import send_mail
+
 
 User = get_user_model()
 
@@ -100,3 +103,16 @@ class ProfileApiView(generics.RetrieveUpdateAPIView):
         queryset = self.get_queryset()
         obj = get_object_or_404(queryset, user=self.request.user)
         return obj
+    
+
+# email
+class EmailTestSend(generics.GenericAPIView):
+    def post(self, *args, **kwargs):
+        send_mail(
+            "Subject here",
+            "Here is the message.",
+            "from@example.com",
+            ["to@example.com"],
+            fail_silently=False,
+        )
+        return Response('email sent')

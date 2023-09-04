@@ -19,6 +19,7 @@ Pillow==9.5.0
 markdown
 django-filter
 drf-yasg[validation]
+djangorestframework-simplejwt
 
 django-ckeditor==6.7.0
 django-extensions==3.2.3
