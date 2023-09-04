@@ -54,6 +54,9 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'drf_yasg',
     
+    # email template
+    'mail_templated',
+
     #packages
     'sorl.thumbnail',
     'django.contrib.humanize',

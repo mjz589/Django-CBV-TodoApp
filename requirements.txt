@@ -1,4 +1,4 @@
-#general modules
+# general modules
 Django==4.2.4
 djangorestframework
 asgiref==3.7.2
@@ -15,11 +15,18 @@ draftjs-exporter==2.1.7
 python-decouple==3.8
 Pillow==9.5.0
 
-#third party modules
+# third party modules
+sorl-thumbnail==12.9.0
 markdown
 django-filter
 drf-yasg[validation]
 djangorestframework-simplejwt
+
+# email third party modules
+django-mail-templated
+
+# deployment modules
+
 
 django-ckeditor==6.7.0
 django-extensions==3.2.3
@@ -27,11 +34,10 @@ django-js-asset==2.1.0
 django-robots==5.0
 django-taggit==4.0.0
 
-sorl-thumbnail==12.9.0
+
 sqlparse==0.4.4
 typing_extensions==4.7.1
 anyascii==0.3.2
-beautifulsoup4==4.11.2
 bleach==6.0.0
 certifi==2022.12.7
 cffi==1.15.1
