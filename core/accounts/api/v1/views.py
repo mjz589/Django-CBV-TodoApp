@@ -20,8 +20,9 @@ from ...models import Profile
 from django.shortcuts import get_object_or_404
 # email
 # from django.core.mail import send_mail
-from mail_templated import send_mail
-
+# from mail_templated import send_mail
+from mail_templated import EmailMessage
+from ..utils import EmailThread
 
 User = get_user_model()
 
@@ -110,5 +111,6 @@ class ProfileApiView(generics.RetrieveUpdateAPIView):
 class EmailTestSend(generics.GenericAPIView):
     def post(self, *args, **kwargs):
         profile = Profile.objects.get(user=self.request.user.id)
-        send_mail('email/hello.tpl', {'name': profile.first_name }, 'admin@admin.com', [profile.user.email] )
+        email_obj = EmailMessage('email/hello.tpl', {'name': profile.first_name }, 'admin@admin.com', to=[profile.user.email] )
+        EmailThread(email_obj)
         return Response('email sent')
