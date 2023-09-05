@@ -15,7 +15,7 @@ urlpatterns = [
     # email test
     path('test-email/', views.EmailTestSend.as_view(), name='test-email'),
     # activation
-    #path('activation/confirm', views.ActivationView.as_view(), name='activation'),
+    path('activation/confirm/<str:token>', views.ActivationApiView.as_view(), name='activation'),
     # resend activation
     # path('activation/resend', views.ActivationView.as_view(), name),
     
