@@ -5,7 +5,7 @@ from ..serializers import RegistrationSerializer
 from django.shortcuts import get_object_or_404
 # email
 from mail_templated import EmailMessage
-from ..utils import EmailThread
+from ...utils import EmailThread
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
