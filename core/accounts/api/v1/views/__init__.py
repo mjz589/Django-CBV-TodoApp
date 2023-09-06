@@ -19,5 +19,3 @@ from .CustomDiscardAuthToken import *
 
 # Profile view
 from .ProfileApiView import *
-
-from .EmailTestSend import *
