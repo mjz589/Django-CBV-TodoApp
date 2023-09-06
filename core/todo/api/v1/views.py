@@ -37,8 +37,11 @@ class TaskModelViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         # define the queryset wanted
-        profile = Profile.objects.get(user=self.request.user.id)
-        queryset = Task.objects.filter(user=profile.id)
+        if self.request.user.is_verified:
+            profile = Profile.objects.get(user=self.request.user.id)
+            queryset = Task.objects.filter(user=profile.id)
+        else:
+            raise serializers.ValidationError({'detail': 'User is not verified.'}) 
         return queryset
     # extra actions
     @action(methods=["GET",],detail=False)
