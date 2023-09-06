@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 
 from django.contrib.auth import get_user_model
+
 User = get_user_model()
 
 
@@ -13,5 +14,4 @@ class CustomDiscardAuthToken(APIView):
 
     def post(self, request, *args, **kwargs):
         request.user.auth_token.delete()
-        return Response(status= status.HTTP_204_NO_CONTENT)
- 
+        return Response(status=status.HTTP_204_NO_CONTENT)

@@ -1,12 +1,12 @@
 from django.db import models
-from django.utils.translation import gettext_lazy as _
-from .users import User 
+from .users import User
+
 # Signals
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 # Create your models here.
-    
+
 
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -20,11 +20,9 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.email
-    
 
-@receiver(post_save,sender=User)
-def save_profile(sender,instance,created, **kwargs):
+
+@receiver(post_save, sender=User)
+def save_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
-
-    

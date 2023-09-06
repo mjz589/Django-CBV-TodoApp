@@ -1,5 +1,6 @@
 from rest_framework import permissions
 
+
 # custom permissions
 class IsOwnerOrReadOnly(permissions.BasePermission):
     """
