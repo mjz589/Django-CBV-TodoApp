@@ -110,6 +110,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ('id', 'email', 'first_name', 'last_name', 'image', 'description')
         read_only_fields = ('email',)
 
+# activation serializer
 class ActivationResendSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
 
@@ -127,3 +128,32 @@ class ActivationResendSerializer(serializers.Serializer):
         attrs['user'] = user_obj
         return super().validate(attrs)
     
+
+# Reset Password Request serializer
+class ResetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+
+    def validate(self, attrs):
+        email = attrs.get('email')
+        try:
+            user_obj = User.objects.get(email=email)
+        # if user does not exist
+        except User.DoesNotExist:
+            raise serializers.ValidationError({'detail': 'User does not exist.'})
+        # add user_obj to attrs in order to use it in view
+        attrs['user'] = user_obj
+        return super().validate(attrs)
+
+# Reset Password with given token serializer
+class ResetPasswordTokenSerializer(serializers.Serializer):
+    password1 = serializers.CharField(required=True)
+    password2 = serializers.CharField(required=True)
+
+    def validate(self, attrs):
+        if attrs.get('password1') != attrs.get('password2'):
+            raise serializers.ValidationError({'detail': 'Passwords doesn\'t match.'})
+        try:
+            validate_password(attrs.get('password1'))
+        except exceptions.ValidationError as e:
+            raise serializers.ValidationError({'password': list(e.messages)})
+        return super().validate(attrs)
