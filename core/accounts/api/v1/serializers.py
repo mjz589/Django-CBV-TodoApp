@@ -63,6 +63,8 @@ class CustomAuthTokenSerializer(serializers.Serializer):
             if not user:
                 msg = _('Unable to log in with provided credentials.')
                 raise serializers.ValidationError(msg, code='authorization')
+            if not user.is_verified:
+                raise serializers.ValidationError({'detail': 'User is not verified.'})
         else:
             msg = _('Must include "username" and "password".')
             raise serializers.ValidationError(msg, code='authorization')
@@ -73,11 +75,15 @@ class CustomAuthTokenSerializer(serializers.Serializer):
 
 # custom jwt create
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+
     def validate(self, attrs):
         validated_data = super().validate(attrs)
+        if not self.is_verified:
+                raise serializers.ValidationError({'detail': 'User is not verified.'})
         validated_data['email'] = self.user.email
         validated_data['user_id'] = self.user.id 
         return validated_data
+    
     
 # change password
 class ChangePasswordApiSerializer(serializers.Serializer):
@@ -103,3 +109,51 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ('id', 'email', 'first_name', 'last_name', 'image', 'description')
         read_only_fields = ('email',)
+
+# activation serializer
+class ActivationResendSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+
+    def validate(self, attrs):
+        email = attrs.get('email')
+        try:
+            user_obj =  User.objects.get(email=email)
+        # if user does not exist
+        except User.DoesNotExist:
+            raise serializers.ValidationError({'detail': 'User does not exist.'})
+        # if user is already verified
+        if user_obj.is_verified:
+            raise serializers.ValidationError({'detail': 'User is already activated and verified.'})
+        # add user_obj to attrs in order to use it in view
+        attrs['user'] = user_obj
+        return super().validate(attrs)
+    
+
+# Reset Password Request serializer
+class ResetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+
+    def validate(self, attrs):
+        email = attrs.get('email')
+        try:
+            user_obj = User.objects.get(email=email)
+        # if user does not exist
+        except User.DoesNotExist:
+            raise serializers.ValidationError({'detail': 'User does not exist.'})
+        # add user_obj to attrs in order to use it in view
+        attrs['user'] = user_obj
+        return super().validate(attrs)
+
+# Reset Password with given token serializer
+class ResetPasswordTokenSerializer(serializers.Serializer):
+    password1 = serializers.CharField(required=True)
+    password2 = serializers.CharField(required=True)
+
+    def validate(self, attrs):
+        if attrs.get('password1') != attrs.get('password2'):
+            raise serializers.ValidationError({'detail': 'Passwords doesn\'t match.'})
+        try:
+            validate_password(attrs.get('password1'))
+        except exceptions.ValidationError as e:
+            raise serializers.ValidationError({'password': list(e.messages)})
+        return super().validate(attrs)

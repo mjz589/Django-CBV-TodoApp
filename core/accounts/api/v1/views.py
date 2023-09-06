@@ -18,6 +18,15 @@ from django.contrib.auth import get_user_model
 # profile
 from ...models import Profile
 from django.shortcuts import get_object_or_404
+# email
+# from django.core.mail import send_mail
+# from mail_templated import send_mail
+from mail_templated import EmailMessage
+from ..utils import EmailThread
+from rest_framework_simplejwt.tokens import RefreshToken
+import jwt
+from django.conf import settings
+from jwt.exceptions import ExpiredSignatureError , InvalidSignatureError
 
 User = get_user_model()
 
@@ -30,13 +39,23 @@ class RegistrationApiView(generics.GenericAPIView):
         serializer = RegistrationSerializer(data= request.data)
         if serializer.is_valid():
             serializer.save()
+            email = serializer.validated_data['email']
             data ={
-                'detail' : 'completed registration',
-                'email': serializer.validated_data['email'],
+                'detail' : 'We sent an email to you for verification. Please check your email and click the link to verify your account.',
+                'email': email,
                 
             }
+            user_obj = get_object_or_404(User, email=email)
+            token = self.get_tokens_for_user(user_obj)
+            email_obj = EmailMessage('email/activation_email.tpl', {'token': token }, 'admin@admin.com', to=[email] )
+            EmailThread(email_obj).start()
             return Response(data, status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    # get access token for user
+    def get_tokens_for_user(self, user):
+        refresh = RefreshToken.for_user(user)
+        return str(refresh.access_token)
     
 
 # custom Auth Token
@@ -100,3 +119,41 @@ class ProfileApiView(generics.RetrieveUpdateAPIView):
         queryset = self.get_queryset()
         obj = get_object_or_404(queryset, user=self.request.user)
         return obj
+    
+
+# email
+class EmailTestSend(generics.GenericAPIView):
+    def get(self, *args, **kwargs):
+        self.email = 'mjz589.2018@gmail.com'
+        user_obj = get_object_or_404(User, email=self.email)
+        token = self.get_tokens_for_user(user_obj)
+        email_obj = EmailMessage('email/activation_email.tpl', {'token': token }, 'admin@admin.com', to=[self.email] )
+        EmailThread(email_obj).start()
+        return Response('email sent')
+    
+    # get access token for user
+    def get_tokens_for_user(self, user):
+        refresh = RefreshToken.for_user(user)
+        return str(refresh.access_token)
+
+
+# verify user by jwt token after sending email
+class ActivationApiView(APIView):
+    def get(self, request, token, *args, **kwargs):
+        try:
+            token = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+            user_id = token.get('user_id')
+        # if token has been expired
+        except ExpiredSignatureError:
+            return Response({'detail': 'Your token has been expired.'}, status=status.HTTP_400_BAD_REQUEST)
+        # if token is invalid
+        except InvalidSignatureError:
+            return Response({'detail': 'Your token is not valid.'}, status=status.HTTP_400_BAD_REQUEST)
+        user_obj = User.objects.get(pk = user_id)
+        # if user is already verified
+        if user_obj.is_verified:
+            return Response({'detail': 'Your account has alreadey been verified.'}, status=status.HTTP_400_BAD_REQUEST)
+        user_obj.is_verified = True
+        user_obj.is_active = True
+        user_obj.save()
+        return Response({'detail': 'Your account has been verified and activated successfully.'}, status=status.HTTP_200_OK)
