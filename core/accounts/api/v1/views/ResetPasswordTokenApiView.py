@@ -23,6 +23,7 @@ class ResetPasswordTokenApiView(generics.GenericAPIView):
     ]
     serializer_class = ResetPasswordTokenSerializer
     lookup_url_kwarg = "token"
+
     # Reset password by user_id given by jwt token
     def put(self, request, token, *args, **kwargs):
         try:
