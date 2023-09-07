@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
-app_name = "accounts"
+app_name = "accounts-api-v1"
 
 urlpatterns = [
     # registration
@@ -37,6 +37,11 @@ urlpatterns = [
         "reset-password/",
         views.ResetPasswordApiView.as_view(),
         name="reset-password",
+    ),
+    path(
+        "reset-password-confirm/<str:token>",
+        views.ResetPasswordConfirmApiView.as_view(),
+        name="reset-password-confirm",
     ),
     path(
         "reset-password/<str:token>",

@@ -10,6 +10,7 @@ from .ActivationResendApiView import *
 # Password views
 from .ChangePasswordApiView import *
 from .ResetPasswordApiView import *
+from .ResetPasswordConfirmApiView import *
 from .ResetPasswordTokenApiView import *
 
 # Token views
