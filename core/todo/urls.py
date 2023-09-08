@@ -19,5 +19,5 @@ urlpatterns = [
         name="complete_task",
     ),
     path("delete-task/<int:pk>/", TaskDelete.as_view(), name="delete_task"),
-    path("api/v1/", include("todo.api.v1.urls")),
+    path("api/v1/", include("todo.api.v1.urls"), name="todo-api-v1"),
 ]
