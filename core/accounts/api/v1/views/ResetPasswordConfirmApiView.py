@@ -44,7 +44,7 @@ class ResetPasswordConfirmApiView(APIView):
         data = {
             'detail': 'Token is confirmed. Click below link to set a new password.',
             'reset-password-url': reverse_lazy(
-                'accounts:accounts-api-v1:reset-password-token',
+                'accounts:api-v1:reset-password-token',
                 request=request,
                 kwargs={'token': token}),
         }

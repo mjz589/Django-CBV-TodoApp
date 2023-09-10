@@ -4,7 +4,6 @@ from django.urls import reverse
 from accounts.models import User, Profile
 from todo.models import Task
 
-
 @pytest.fixture
 def api_client():
     client = APIClient()
@@ -21,75 +20,68 @@ def create_task(common_user):
     task = Task.objects.create(
             user= user,
             title= 'test',
-            complete= True,)
+            complete= False,)
     return task
 
-@pytest.mark.django_db
-class TestTaskApi():
 
-    def test_get_task_list_response_401_status(self, api_client):
+@pytest.mark.django_db
+class TestTaskModels():
+
+    def test_get_task_list_response_302_status(self, api_client):
         # without authentication and redirect to login url
-        url = reverse('todo:api-v1:task-list')
+        url = reverse('todo:task_list')
         response = api_client.get(url)
-        assert response.status_code == 401
+        assert response.status_code == 302
         
-    def test_get_task_list_response_200_status(self, api_client, common_user):
+    def test_get_task_list_response_200_status(self, api_client, common_user, create_task):
         # show task list after redirecting to login url for authenticatication
-        url = reverse('todo:api-v1:task-list')
+        url = reverse('todo:task_list')
+        task = create_task
         user = common_user
         api_client.force_authenticate(user)
         response = api_client.get(url, follow=True)
         assert response.status_code == 200
+        assert Task.objects.filter(user=task.user, title= task.title).exists()
 
-    def test_post_task_create_response_201_status(self, api_client, common_user):
+    def test_post_task_create_response_200_status(self, api_client, common_user):
         # craete a task after redirecting to login url for authenticatication
         user = common_user
-        url = reverse('todo:api-v1:task-list')
+        url = reverse('todo:task_list')
         api_client.force_authenticate(user)
         data = {
             'user': user,
-            'title': 'TestTask',
+            'title': 'TestTask-created',
             'complete': True,
         }
         response = api_client.post(url, data=data, follow=True)
-        assert response.status_code == 201
-
-    def test_get_task_retrieve_response_200_status(self, api_client, common_user, create_task):
-        # retrieve a single task after redirecting to login url for authenticatication
-        user = common_user
-        url = reverse('todo:api-v1:task-detail', kwargs={'pk': create_task.id})
-        api_client.force_authenticate(user)
-        response = api_client.get(url, follow=True)
         assert response.status_code == 200
 
-    def test_put_task_response_200_status(self, api_client, common_user, create_task):
-        # edit(put) a task after redirecting to login url for authenticatication
+    def test_patch_task_complete_response_200_status(self, api_client, common_user, create_task):
+        # make a task complete true value after redirecting to login url for authenticatication
         user = common_user
-        url = reverse('todo:api-v1:task-detail', kwargs={'pk': create_task.id})
+        url = reverse('todo:complete_task', kwargs={'pk': create_task.id})
         api_client.force_authenticate(user)
         data = {
-            'user': user,
-            'title': 'TestTask-edited',
-            'complete': False,
-        }
-        response = api_client.put(url, data=data, follow=True)
-        assert response.status_code == 200
-
-    def test_patch_task_response_200_status(self, api_client, common_user, create_task):
-        # edit(patch) a task after redirecting to login url for authenticatication
-        user = common_user
-        url = reverse('todo:api-v1:task-detail', kwargs={'pk': create_task.id})
-        api_client.force_authenticate(user)
-        data = {
-            'complete': False,
+            'complete': True,
         }
         response = api_client.patch(url, data=data, follow=True)
         assert response.status_code == 200
 
-    def test_delete_task_response_204_status(self, api_client, common_user, create_task):
+    def test_patch_task_rename_response_200_status(self, api_client, common_user, create_task):
+        # make a task complete true value after redirecting to login url for authenticatication
+        user = common_user
+        url = reverse('todo:complete_task', kwargs={'pk': create_task.id})
+        api_client.force_authenticate(user)
+        data = {
+            'title': 'Task renamed',
+        }
+        response = api_client.patch(url, data=data, follow=True)
+        assert response.status_code == 200
+
+    def test_delete_task_response_200_status(self, api_client, common_user, create_task):
         # delete a task after redirecting to login url for authenticatication
         user = common_user
-        url = reverse('todo:api-v1:task-detail', kwargs={'pk': create_task.id})
+        url = reverse('todo:delete_task', kwargs={'pk': create_task.id})
         api_client.force_authenticate(user)
         response = api_client.delete(url, follow=True)
-        assert response.status_code == 204
+        assert response.status_code == 200
