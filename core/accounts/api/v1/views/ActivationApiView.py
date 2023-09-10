@@ -11,6 +11,7 @@ User = get_user_model()
 
 # verify user by jwt token after sending email
 class ActivationApiView(APIView):
+    
     def get(self, request, token, *args, **kwargs):
         try:
             token = jwt.decode(
