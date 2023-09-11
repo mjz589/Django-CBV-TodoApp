@@ -186,7 +186,7 @@ class TestTaskApi:
         user = common_user
         url = reverse("accounts:api-v1:profile")
         data = {
-            "last_name": "developer",
+            "last1_name": "developer",
         }
         api_client.force_authenticate(user)
         response = api_client.patch(url, data=data, follow=True)
