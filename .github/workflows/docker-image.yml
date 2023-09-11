@@ -12,10 +12,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
-  steps:
+    steps:
     - uses: actions/checkout@v3
     - name: Setup Docker-Compose
       run: docker-compose up -d
     - name: Run Tests
       run: docker-compose exec backend sh -c "flake8 && pytest ."
-  
+        
