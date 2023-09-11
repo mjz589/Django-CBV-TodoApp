@@ -17,7 +17,6 @@ User = get_user_model()
 
 
 class RegistrationApiView(generics.GenericAPIView):
-    
     serializer_class = RegistrationSerializer
     permission_classes = [
         IsNotAuthenticated,

@@ -25,9 +25,7 @@ class ResetPasswordConfirmApiView(APIView):
     # Cheak if token is valid
     def get(self, request, token, *args, **kwargs):
         try:
-            jwt.decode(
-                token, settings.SECRET_KEY, algorithms=["HS256"]
-            )
+            jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
         # if token has been expired
         except ExpiredSignatureError:
             return Response(
@@ -42,10 +40,11 @@ class ResetPasswordConfirmApiView(APIView):
             )
         # go for reset password
         data = {
-            'detail': 'Token is confirmed. Click below link to set a new password.',
-            'reset-password-url': reverse_lazy(
-                'accounts:api-v1:reset-password-token',
+            "detail": "Token is confirmed. Click below link to set a new password.",
+            "reset-password-url": reverse_lazy(
+                "accounts:api-v1:reset-password-token",
                 request=request,
-                kwargs={'token': token}),
+                kwargs={"token": token},
+            ),
         }
         return Response(data)

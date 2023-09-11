@@ -11,12 +11,9 @@ User = get_user_model()
 
 # verify user by jwt token after sending email
 class ActivationApiView(APIView):
-    
     def get(self, request, token, *args, **kwargs):
         try:
-            token = jwt.decode(
-                token, settings.SECRET_KEY, algorithms=["HS256"]
-            )
+            token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
             user_id = token.get("user_id")
         # if token has been expired
         except ExpiredSignatureError:
@@ -41,8 +38,6 @@ class ActivationApiView(APIView):
         user_obj.is_active = True
         user_obj.save()
         return Response(
-            {
-                "detail": "Your account has been verified and activated successfully."
-            },
+            {"detail": "Your account has been verified and activated successfully."},
             status=status.HTTP_200_OK,
         )

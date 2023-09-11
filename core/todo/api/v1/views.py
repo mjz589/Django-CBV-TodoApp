@@ -44,9 +44,7 @@ class TaskModelViewSet(viewsets.ModelViewSet):
             profile = Profile.objects.get(user=self.request.user.id)
             queryset = Task.objects.filter(user=profile.id)
         else:
-            raise serializers.ValidationError(
-                {"detail": "User is not verified."}
-            )
+            raise serializers.ValidationError({"detail": "User is not verified."})
         return queryset
 
     # extra actions
