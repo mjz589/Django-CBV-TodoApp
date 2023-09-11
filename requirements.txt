@@ -17,7 +17,7 @@ markdown
 django-filter
 drf-yasg[validation]
 djangorestframework-simplejwt
-
+django-cors-headers
 
 # email third party modules
 django-mail-templated
