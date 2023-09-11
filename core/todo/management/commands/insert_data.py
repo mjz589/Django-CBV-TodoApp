@@ -4,20 +4,20 @@ from faker import Faker
 from accounts.models import User, Profile
 from ...models import Task
 
+
 class Command(BaseCommand):
-    help = 'inserting dummy data into database'
+    help = "inserting dummy data into database"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fake = Faker()
-
 
     def handle(self, *args, **kwargs):
         # creating dummy data
         for _ in range(10):
             user = User.objects.create_user(
                 email=self.fake.email(),
-                password='fake@1234',
+                password="fake@1234",
                 is_active=True,
                 is_verified=True,
             )
@@ -28,7 +28,7 @@ class Command(BaseCommand):
             profile.save()
             for _ in range(10):
                 Task.objects.create(
-                        user = profile,
-                        title = self.fake.paragraph(nb_sentences=1),
-                        complete = self.fake.boolean(),
+                    user=profile,
+                    title=self.fake.paragraph(nb_sentences=1),
+                    complete=self.fake.boolean(),
                 )
