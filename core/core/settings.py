@@ -68,6 +68,8 @@ INSTALLED_APPS = [
     "ckeditor_uploader",  # CKEditor media uploader
     # "captcha",
     "compressor",
+    # access for api from outside
+    "corsheaders",
 ]
 
 SITE_ID = 1
@@ -97,11 +99,14 @@ CKEDITOR_CONFIGS = {
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    # access for api from outside (next line)
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -257,3 +262,6 @@ EMAIL_PORT = 25
 # # login
 LOGIN_REDIRECT_URL = "accounts/login/"
 # LOGOUT_REDIRECT_URL = ''
+
+# access for api from outside (any service can access)
+CORS_ALLOW_ALL_ORIGINS = True
