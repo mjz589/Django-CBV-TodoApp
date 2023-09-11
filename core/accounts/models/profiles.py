@@ -12,7 +12,9 @@ class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='profile/' , blank=True, null=True, default='profile/default.png')
+    image = models.ImageField(
+        upload_to="profile/", blank=True, null=True, default="profile/default.png"
+    )
     description = models.TextField(blank=True)
 
     created_date = models.DateTimeField(auto_now_add=True)

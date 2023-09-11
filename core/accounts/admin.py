@@ -23,6 +23,7 @@ class CustomUserAdmin(UserAdmin):
     The below line (add_form) already exists even without writing it.
     That's because UserAdmin has this.
     """
+
     add_form = CustomUserCreationForm
 
     model = User
