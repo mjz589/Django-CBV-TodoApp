@@ -1,4 +1,4 @@
-import pytest
+import pytestpic_
 from rest_framework.test import APIClient
 from django.urls import reverse
 from rest_framework_simplejwt.tokens import RefreshToken
