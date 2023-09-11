@@ -184,9 +184,9 @@ class TestTaskApi:
     def test_patch_profile_200_status(self, api_client, common_user):
         # patch profile
         user = common_user
-        url = reverse("accounts:api-v1:profile")
+        url = reverse("accounts:api-v1:profile111")
         data = {
-            "last1_name": "developer",
+            "last_name": "developer",
         }
         api_client.force_authenticate(user)
         response = api_client.patch(url, data=data, follow=True)
