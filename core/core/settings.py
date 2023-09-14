@@ -264,3 +264,6 @@ LOGIN_REDIRECT_URL = "accounts/login/"
 
 # access for api from outside (any service can access)
 CORS_ALLOW_ALL_ORIGINS = True
+
+# celery configs
+CELERY_BROKER_URL = "redis://redis:6379/1"
