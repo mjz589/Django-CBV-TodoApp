@@ -22,6 +22,7 @@ class TaskList(LoginRequiredMixin, ListView):
     template_name = "todo/task_list.html"
     context_object_name = "tasks"
     delete_completed_tasks.delay()
+    
     def get_queryset(self):
         profile = Profile.objects.get(user=self.request.user)
         return self.model.objects.filter(user=profile)
