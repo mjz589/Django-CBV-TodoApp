@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     "drf_yasg",
     # email template
     "mail_templated",
+    # access for api from outside
+    "corsheaders",
     # packages
     "sorl.thumbnail",
     "django.contrib.humanize",
@@ -68,8 +70,7 @@ INSTALLED_APPS = [
     "ckeditor_uploader",  # CKEditor media uploader
     # "captcha",
     "compressor",
-    # access for api from outside
-    "corsheaders",
+
 ]
 
 SITE_ID = 1

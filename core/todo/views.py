@@ -12,7 +12,7 @@ from django.urls import reverse_lazy
 from .models import Task
 from .forms import CreateTaskForm, UpdateTaskForm
 from accounts.models import Profile
-
+from core.celery import delete_completed_tasks
 # Create your views here.
 
 
@@ -21,6 +21,7 @@ class TaskList(LoginRequiredMixin, ListView):
     model = Task
     template_name = "todo/task_list.html"
     context_object_name = "tasks"
+    delete_completed_tasks.delay()
 
     def get_queryset(self):
         profile = Profile.objects.get(user=self.request.user)

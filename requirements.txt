@@ -34,4 +34,4 @@ Faker
 
 # background process and cache
 redis
-celery==5.3
+celery==5.3.4
