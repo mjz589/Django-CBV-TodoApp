@@ -22,7 +22,7 @@ app.autodiscover_tasks()
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
 
-    # Calls test('hello') every 10 seconds.
+    # Calls test('hello') every 10 minutes.
     sender.add_periodic_task(
         crontab(minute='*/10',),
         delete_completed_tasks.s(), name='delete completed tasks')
