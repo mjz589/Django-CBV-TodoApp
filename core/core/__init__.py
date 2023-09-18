@@ -11,4 +11,5 @@ os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 
 from .celery import app as celery_app
 
+
 __all__ = ("celery_app",)
