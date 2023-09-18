@@ -13,6 +13,7 @@ from .models import Task
 from .forms import CreateTaskForm, UpdateTaskForm
 from accounts.models import Profile
 from core.celery import delete_completed_tasks
+
 # Create your views here.
 
 

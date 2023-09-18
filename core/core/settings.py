@@ -70,7 +70,6 @@ INSTALLED_APPS = [
     "ckeditor_uploader",  # CKEditor media uploader
     # "captcha",
     "compressor",
-
 ]
 
 SITE_ID = 1
