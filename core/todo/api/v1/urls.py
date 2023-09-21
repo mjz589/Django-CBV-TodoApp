@@ -8,7 +8,7 @@ router = DefaultRouter()
 router.register("task", views.TaskModelViewSet, basename="task")
 urlpatterns = router.urls
 urlpatterns += [
-    path("weathering/", views.WeatheringView.as_view(), name="weathering"),
+    path("weather/", views.WeatherView.as_view(), name="weather"),
 ]
 
 """
