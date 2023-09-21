@@ -9,7 +9,9 @@ class TaskSerializer(serializers.ModelSerializer):
         method_name="get_user_image", read_only=True
     )
 
-    relative_url = serializers.URLField(source="get_absolute_api_url", read_only=True)
+    relative_url = serializers.URLField(
+        source="get_absolute_api_url", read_only=True
+    )
     absolute_url = serializers.SerializerMethodField(method_name="get_abs_url")
 
     def get_abs_url(self, obj):

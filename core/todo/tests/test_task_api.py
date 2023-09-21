@@ -46,7 +46,9 @@ class TestTaskApi:
         response = api_client.get(url, follow=True)
         assert response.status_code == 200
 
-    def test_post_task_create_response_201_status(self, api_client, common_user):
+    def test_post_task_create_response_201_status(
+        self, api_client, common_user
+    ):
         # craete a task after redirecting to login url for authenticatication
         user = common_user
         url = reverse("todo:api-v1:task-list")
@@ -69,7 +71,9 @@ class TestTaskApi:
         response = api_client.get(url, follow=True)
         assert response.status_code == 200
 
-    def test_put_task_response_200_status(self, api_client, common_user, create_task):
+    def test_put_task_response_200_status(
+        self, api_client, common_user, create_task
+    ):
         # edit(put) a task after redirecting to login url for authenticatication
         user = common_user
         url = reverse("todo:api-v1:task-detail", kwargs={"pk": create_task.id})
@@ -82,7 +86,9 @@ class TestTaskApi:
         response = api_client.put(url, data=data, follow=True)
         assert response.status_code == 200
 
-    def test_patch_task_response_200_status(self, api_client, common_user, create_task):
+    def test_patch_task_response_200_status(
+        self, api_client, common_user, create_task
+    ):
         # edit(patch) a task after redirecting to login url for authenticatication
         user = common_user
         url = reverse("todo:api-v1:task-detail", kwargs={"pk": create_task.id})

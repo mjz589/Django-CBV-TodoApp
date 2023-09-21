@@ -24,6 +24,7 @@ from django.views.decorators.vary import vary_on_headers  # vary_on_cookie,
 import requests
 from decouple import config
 
+
 class TaskModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = TaskSerializer
@@ -51,7 +52,9 @@ class TaskModelViewSet(viewsets.ModelViewSet):
             profile = Profile.objects.get(user=self.request.user.id)
             queryset = Task.objects.filter(user=profile.id)
         else:
-            raise serializers.ValidationError({"detail": "User is not verified."})
+            raise serializers.ValidationError(
+                {"detail": "User is not verified."}
+            )
         return queryset
 
     # extra actions
@@ -67,19 +70,26 @@ class TaskModelViewSet(viewsets.ModelViewSet):
 
 class WeatherView(APIView):
     # With auth: cache requested url for each user for 20 minutes
-    @method_decorator(cache_page(60*20))
-    @method_decorator(vary_on_headers("Authorization",))
+    @method_decorator(cache_page(60 * 20))
+    @method_decorator(
+        vary_on_headers(
+            "Authorization",
+        )
+    )
     def get(self, request, format=None):
-        api_key = config("openweather_apikey", default="18f933ce846bc85b1007e70e217290fe")
-        response = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat=37.474806&lon=57.315210&appid={api_key}")
+        api_key = config(
+            "openweather_apikey", default="18f933ce846bc85b1007e70e217290fe"
+        )
+        response = requests.get(
+            f"https://api.openweathermap.org/data/2.5/weather?lat=37.474806&lon=57.315210&appid={api_key}"
+        )
         data = response.json()
         # convert from kelvin to celsius with 0.01 rounding
-        data['main']['temp'] = round(data['main']['temp']-273.15, 2)
-        data['main']['feels_like'] = round(data['main']['feels_like']-273.15, 2)
-        data['main']['temp_min'] = round(data['main']['temp_min']-273.15, 2)
-        data['main']['temp_max'] = round(data['main']['temp_max']-273.15, 2)
-        content = {
-            'weather': data
-        }
+        data["main"]["temp"] = round(data["main"]["temp"] - 273.15, 2)
+        data["main"]["feels_like"] = round(
+            data["main"]["feels_like"] - 273.15, 2
+        )
+        data["main"]["temp_min"] = round(data["main"]["temp_min"] - 273.15, 2)
+        data["main"]["temp_max"] = round(data["main"]["temp_max"] - 273.15, 2)
+        content = {"weather": data}
         return Response(content)
-    

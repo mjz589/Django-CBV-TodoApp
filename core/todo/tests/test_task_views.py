@@ -50,7 +50,9 @@ class TestTaskModels:
         assert response.status_code == 200
         assert Task.objects.filter(user=task.user, title=task.title).exists()
 
-    def test_post_task_create_response_200_status(self, api_client, common_user):
+    def test_post_task_create_response_200_status(
+        self, api_client, common_user
+    ):
         # craete a task after redirecting to login url for authenticatication
         user = common_user
         url = reverse("todo:task_list")
