@@ -7,6 +7,10 @@ from django.views.generic import (
     DeleteView,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
+# weather
+import requests
+from django.core.cache import cache
+from django.http import JsonResponse
 
 from django.urls import reverse_lazy
 from .models import Task
@@ -130,3 +134,18 @@ class TaskComplete(LoginRequiredMixin, View):
         task.complete = True
         task.save()
         return redirect(self.success_url)
+    
+class Weathering(LoginRequiredMixin, View):
+    success_url = reverse_lazy("todo:task_list")
+    context_object_name = "task"
+    def get(self, request, *args, **kwargs):
+        if cache.get("weather") is None:
+            response = requests.get("https://api.openweathermap.org/data/2.5/weather?lat=37.474806&lon=57.315210&appid=18f933ce846bc85b1007e70e217290fe")
+            data = response.json()
+            # convert from kelvin to celsius with 0.1 rounding
+            data['main']['temp'] = round(data['main']['temp']-273.15, 1)
+            data['main']['feels_like'] = round(data['main']['feels_like']-273.15, 1)
+            data['main']['temp_min'] = round(data['main']['temp_min']-273.15, 1)
+            data['main']['temp_max'] = round(data['main']['temp_max']-273.15, 1)
+            cache.set("weather", data)
+        return JsonResponse(cache.get("weather"))

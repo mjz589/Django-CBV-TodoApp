@@ -7,6 +7,7 @@ from accounts.models import Profile
 
 # class-based views for api
 from rest_framework import viewsets
+from rest_framework.views import APIView
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import serializers
@@ -16,6 +17,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from .paginations import DefaultPagination
 
+# caching
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.views.decorators.vary import vary_on_headers  # vary_on_cookie,
+import requests
 
 class TaskModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
@@ -56,3 +62,22 @@ class TaskModelViewSet(viewsets.ModelViewSet):
     )
     def get_ok(self, request):
         return Response({"detail": "extra actions -OK-"})
+
+
+class WeatheringView(APIView):
+    # With auth: cache requested url for each user for 20 minutes
+    @method_decorator(cache_page(60*20))
+    @method_decorator(vary_on_headers("Authorization",))
+    def get(self, request, format=None):
+        response = requests.get("https://api.openweathermap.org/data/2.5/weather?lat=37.474806&lon=57.315210&appid=18f933ce846bc85b1007e70e217290fe")
+        data = response.json()
+        # convert from kelvin to celsius with 0.1 rounding
+        data['main']['temp'] = round(data['main']['temp']-273.15, 1)
+        data['main']['feels_like'] = round(data['main']['feels_like']-273.15, 1)
+        data['main']['temp_min'] = round(data['main']['temp_min']-273.15, 1)
+        data['main']['temp_max'] = round(data['main']['temp_max']-273.15, 1)
+        content = {
+            'weather': data
+        }
+        return Response(content)
+    

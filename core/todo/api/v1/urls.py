@@ -1,4 +1,5 @@
 from rest_framework.routers import DefaultRouter
+from django.urls import path
 from . import views
 
 app_name = "api-v1"
@@ -6,6 +7,9 @@ app_name = "api-v1"
 router = DefaultRouter()
 router.register("task", views.TaskModelViewSet, basename="task")
 urlpatterns = router.urls
+urlpatterns += [
+    path("weathering/", views.WeatheringView.as_view(), name="weathering"),
+]
 
 """
 from django.urls import path
