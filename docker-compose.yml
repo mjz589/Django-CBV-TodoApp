@@ -20,6 +20,7 @@ services:
     environment:
       - SECRET_KEY="test"
       - DEBUG=True
+      - openweather_apikey="18f933ce846bc85b1007e70e217290fe"
     depends_on:
       - redis
 

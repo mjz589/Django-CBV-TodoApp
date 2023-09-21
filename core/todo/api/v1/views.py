@@ -22,6 +22,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_headers  # vary_on_cookie,
 import requests
+from decouple import config
 
 class TaskModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
@@ -69,7 +70,8 @@ class WeatheringView(APIView):
     @method_decorator(cache_page(60*20))
     @method_decorator(vary_on_headers("Authorization",))
     def get(self, request, format=None):
-        response = requests.get("https://api.openweathermap.org/data/2.5/weather?lat=37.474806&lon=57.315210&appid=18f933ce846bc85b1007e70e217290fe")
+        api_key = config("openweather_apikey", default="18f933ce846bc85b1007e70e217290fe")
+        response = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat=37.474806&lon=57.315210&appid={api_key}")
         data = response.json()
         # convert from kelvin to celsius with 0.1 rounding
         data['main']['temp'] = round(data['main']['temp']-273.15, 1)
