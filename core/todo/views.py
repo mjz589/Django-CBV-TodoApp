@@ -11,7 +11,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 # weather
 import requests
 from django.core.cache import cache
-from django.shortcuts import render
 from decouple import config
 
 from django.urls import reverse_lazy
