@@ -5,6 +5,7 @@ from .views import (
     TaskComplete,
     TaskUpdate,
     TaskDelete,
+    Weather,
 )
 
 app_name = "todo"
@@ -19,5 +20,6 @@ urlpatterns = [
         name="complete_task",
     ),
     path("delete-task/<int:pk>/", TaskDelete.as_view(), name="delete_task"),
+    path("weather/", Weather.as_view(), name="weather"),
     path("api/v1/", include("todo.api.v1.urls")),
 ]

@@ -36,3 +36,4 @@ Faker
 redis
 celery==5.3.4
 django-redis
+requests

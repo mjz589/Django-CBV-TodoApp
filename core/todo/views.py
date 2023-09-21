@@ -8,6 +8,11 @@ from django.views.generic import (
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+# weather
+import requests
+from django.core.cache import cache
+from decouple import config
+
 from django.urls import reverse_lazy
 from .models import Task
 from .forms import CreateTaskForm, UpdateTaskForm
@@ -130,3 +135,34 @@ class TaskComplete(LoginRequiredMixin, View):
         task.complete = True
         task.save()
         return redirect(self.success_url)
+
+
+# weathering widget
+class Weather(LoginRequiredMixin, ListView):
+    success_url = reverse_lazy("todo:task_list")
+    context_object_name = "weather_api"
+    template_name = "todo/weather.html"
+
+    def get_queryset(self, *args, **kwargs):
+        if cache.get("weather") is None:
+            api_key = config(
+                "openweather_apikey",
+                default="18f933ce846bc85b1007e70e217290fe",
+            )
+            response = requests.get(
+                f"https://api.openweathermap.org/data/2.5/weather?lat=37.474806&lon=57.315210&appid={api_key}"
+            )
+            data = response.json()
+            # convert from kelvin to celsius with 0.01 rounding
+            data["main"]["temp"] = round(data["main"]["temp"] - 273.15, 2)
+            data["main"]["feels_like"] = round(
+                data["main"]["feels_like"] - 273.15, 2
+            )
+            data["main"]["temp_min"] = round(
+                data["main"]["temp_min"] - 273.15, 2
+            )
+            data["main"]["temp_max"] = round(
+                data["main"]["temp_max"] - 273.15, 2
+            )
+            cache.set("weather", data)
+        return cache.get("weather")

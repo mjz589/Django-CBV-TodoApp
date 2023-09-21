@@ -70,6 +70,7 @@ INSTALLED_APPS = [
     "ckeditor_uploader",  # CKEditor media uploader
     # "captcha",
     "compressor",
+    "requests",
 ]
 
 SITE_ID = 1
@@ -82,7 +83,9 @@ ROBOTS_USE_SITEMAP = False
 CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_IMAGE_BACKEND = "pillow"
-CKEDITOR_JQUERY_URL = "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"
+CKEDITOR_JQUERY_URL = (
+    "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"
+)
 CKEDITOR_CONFIGS = {
     "default": {
         "toolbar": "full",
@@ -276,6 +279,6 @@ CACHES = {
         # "TIMEOUT": 300, BY DEFAULT IS 5 MINUTES
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
+        },
     }
 }
