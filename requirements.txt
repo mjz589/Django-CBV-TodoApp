@@ -23,7 +23,10 @@ django-cors-headers
 django-mail-templated
 
 # deployment modules
+gunicorn
 
+# database-PostgreSQL
+psycopg2-binary>=2.9
 
 # refactoring and tests
 black
