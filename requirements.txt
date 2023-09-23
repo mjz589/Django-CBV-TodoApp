@@ -33,6 +33,7 @@ black
 flake8
 pytest
 pytest-django
+pytest-postgresql
 Faker
 
 # background process and cache
