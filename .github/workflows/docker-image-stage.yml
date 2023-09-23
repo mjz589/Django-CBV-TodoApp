@@ -1,0 +1,40 @@
+name: Django Project CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    
+    services:
+        postgres:
+          image: postgres:11
+          env:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: ci_db_test
+          ports:
+            - 5432:5432
+          options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup Docker-Compose
+      run: docker-compose up -d
+    - name: Setup database
+      env:
+        RAILS_ENV: test
+        POSTGRES_HOST: postgres
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: ci_db_test
+        POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+    - name: Run Tests
+      run: docker-compose run backend sh -c "flake8 && pytest ."
+        
