@@ -19,7 +19,6 @@ jobs:
           echo "${{ secrets.ENV_FILE }}" > .env
           cat .env
       - name: Create env file for django
-        working-directory: Django-CBV-TodoApp
         run: |
           mkdir -p envs/stage/django
           echo "${{ secrets.DJANGO }}" > envs/stage/django/.env
