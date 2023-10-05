@@ -7,19 +7,16 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-    
-    
+
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup Docker-Compose
-      run: docker-compose up -d
-    - name: PostgreSQL Check
+      - uses: actions/checkout@v3
+      - name: Setup Docker-Compose
+        run: docker-compose up -d
+      - name: PostgreSQL Check
         run: |
           DOCKER_CONTAINER_NAME="db"
-          timeout 90s bash -c "until docker exec $DOCKER_CONTAINER_NAME pg_isready ; do sleep 5 ; done"
-    - name: Run Tests
-      run: docker-compose run backend sh -c "flake8 && pytest ."
+          timeout 90s bash -c "until docker exec $DOCKER_CONTAINER_NAME pg_isready; do sleep 5; done"
+      - name: Run Tests
+        run: docker-compose run backend sh -c "flake8 && pytest ."
