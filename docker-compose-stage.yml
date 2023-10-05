@@ -19,7 +19,7 @@ services:
     ports:
       - "5432:5432"
     restart: always
-
+    
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U postgres']
       interval: 10s
@@ -44,7 +44,8 @@ services:
       - "8000"
     depends_on:
       - redis
-      - db
+      - db:
+        condition: service_healthy
 
   nginx:
     image: nginx
