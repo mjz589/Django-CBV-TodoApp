@@ -15,7 +15,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     env_file:
-      - ./.env
+      - .env
     ports:
       - "5432:5432"
     restart: always
@@ -39,13 +39,12 @@ services:
       - static_volume:/app/static
       - media_volume:/app/media
     env_file:
-      - ./.env
+      - .env
     expose:
       - "8000"
     depends_on:
       - redis
-      - db:
-        condition: service_healthy
+      - db
 
   nginx:
     image: nginx
