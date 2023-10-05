@@ -8,7 +8,12 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# install dependencies
+# Install system dependencies
+RUN apt-get update \
+    && apt-get install -y postgresql \
+    && apt-get clean
+
+# Install Python dependencies
 RUN pip3 install --upgrade pip 
 COPY ./requirements.txt /app
 RUN pip3 install -r requirements.txt
