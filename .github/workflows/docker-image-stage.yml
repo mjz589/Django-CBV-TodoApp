@@ -16,7 +16,5 @@ jobs:
         run: docker-compose up -d
       - name: PostgreSQL Check
         run: |
-          DOCKER_CONTAINER_NAME="db"
-          timeout 90s bash -c "until docker exec $DOCKER_CONTAINER_NAME pg_isready ; do sleep 5 ; done"
-      - name: Run Tests
+          timeout 90s bash -c 'until docker-compose exec -T db pg_isready; do sleep 5; done'
         run: docker-compose run backend sh -c "flake8 && pytest ."
