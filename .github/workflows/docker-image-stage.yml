@@ -12,8 +12,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - name: Create env file
+        run: |
+          echo "POSTGRES_DB=${{ secrets.todo }}" > .env
+          echo "POSTGRES_USER=${{ secrets.postgres }}" >> .env
+          echo "POSTGRES_PASSWORD=${{ secrets.password }}" >> .env
+          cat .env
       - name: Setup Docker-Compose
-        run: docker-compose -f docker-compose-stage.yml --env-file=/home/runner/work/Django-CBV-TodoApp/Django-CBV-TodoApp/envs/stage/db/.env.sample up -d
+        run: docker-compose -f docker-compose-stage.yml up -d
       - name: PostgreSQL Check
         run: |
           DOCKER_CONTAINER_NAME="db"
@@ -21,5 +27,3 @@ jobs:
       - name: Run Tests
         run: |
           docker-compose -f docker-compose-stage.yml exec backend sh -c "flake8 && pytest ."
-
-#hope
