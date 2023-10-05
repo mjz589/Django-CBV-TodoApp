@@ -67,8 +67,6 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.contrib.sitemaps",
     "robots",
-    "ckeditor",  # CKEditor config
-    "ckeditor_uploader",  # CKEditor media uploader
     # "captcha",
     "compressor",
     "requests",
@@ -79,25 +77,6 @@ SITE_ID = 1
 # robots
 ROBOTS_USE_HOST = False
 ROBOTS_USE_SITEMAP = False
-
-# CKEditor
-CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
-CKEDITOR_UPLOAD_PATH = "uploads/"
-CKEDITOR_IMAGE_BACKEND = "pillow"
-CKEDITOR_JQUERY_URL = (
-    "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"
-)
-CKEDITOR_CONFIGS = {
-    "default": {
-        "toolbar": "full",
-        "width": "auto",
-        "extraPlugins": ",".join(
-            [
-                "codesnippet",
-            ]
-        ),
-    },
-}
 
 
 MIDDLEWARE = [
