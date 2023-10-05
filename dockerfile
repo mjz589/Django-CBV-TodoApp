@@ -9,11 +9,6 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 
-# # Install system dependencies
-# RUN apt-get update \
-#     && apt-get install -y postgresql \
-#     && apt-get clean
-
 
 # Install Python dependencies
 RUN pip3 install --upgrade pip 
