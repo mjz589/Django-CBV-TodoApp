@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Create env file
-        working-directory: envs/stage/.env
+        working-directory: envs/stage/
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env
           cat .env
