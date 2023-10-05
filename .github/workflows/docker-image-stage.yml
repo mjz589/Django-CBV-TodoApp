@@ -12,11 +12,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Create env file
+      # .env stage
+      - name: Create env file for db
         working-directory: envs/stage/db/
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env
           cat .env
+      - name: Create env file for django 
+        working-directory: envs/stage/django/
+        run: |
+          echo "${{ secrets.DJANGO }}" > .env
+          cat .env
+      # end of .env creating
       - name: Setup Docker-Compose
         run: docker-compose -f docker-compose-stage.yml up -d
       - name: PostgreSQL Check
