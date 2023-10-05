@@ -20,3 +20,4 @@ jobs:
           timeout 90s bash -c "until docker exec $DOCKER_CONTAINER_NAME pg_isready; do sleep 5; done"
       - name: Run Tests
         run: docker-compose -f docker-compose-stage.yml run backend sh -c "flake8 && pytest ."
+#why
