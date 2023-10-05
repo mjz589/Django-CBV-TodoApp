@@ -16,7 +16,7 @@ jobs:
       - name: Create env file for db
         working-directory: envs/stage/db/
         run: |
-          echo "${{ secrets.ENV_FILE }}" > /.env
+          echo "${{ secrets.ENV_FILE }}" > .env
           cat .env
       - name: Create env file for django
         working-directory: Django-CBV-TodoApp
