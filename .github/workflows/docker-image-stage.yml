@@ -14,9 +14,9 @@ jobs:
       - uses: actions/checkout@v3
       - name: Create env file
         run: |
-          echo "POSTGRES_DB=${{ secrets.todo }}" > .env
-          echo "POSTGRES_USER=${{ secrets.postgres }}" >> .env
-          echo "POSTGRES_PASSWORD=${{ secrets.password }}" >> .env
+          echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" > .env
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
           cat .env
       - name: Setup Docker-Compose
         run: docker-compose -f docker-compose-stage.yml up -d
