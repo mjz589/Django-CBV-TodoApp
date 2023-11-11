@@ -27,10 +27,7 @@ class RegistrationApiView(generics.GenericAPIView):
         if serializer.is_valid():
             serializer.save()
             email = serializer.validated_data["email"]
-            data = {
-                "detail": "We sent an email to you for verification.",
-                "email": email,
-            }
+            
             user_obj = get_object_or_404(User, email=email)
             token = self.get_tokens_for_user(user_obj)
             email_obj = EmailMessage(
@@ -41,6 +38,12 @@ class RegistrationApiView(generics.GenericAPIView):
             )
             # multi threading
             EmailThread(email_obj).start()
+
+            data = {
+                "detail": "We sent an email to you for verification.",
+                "email": email,
+            }
+            # email_thread.join()
             return Response(data, status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
