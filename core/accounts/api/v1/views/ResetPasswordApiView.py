@@ -35,9 +35,7 @@ class ResetPasswordApiView(generics.GenericAPIView):
         )
         # multi threading
         EmailThread(email_obj).start()
-        
-        
-        
+
         data = {
             "detail": "Please check your email and click the link to Reset your password.",
             "email": user_obj.email,
