@@ -33,12 +33,13 @@ class ResetPasswordApiView(generics.GenericAPIView):
             "admin@admin.com",
             to=[user_obj.email],
         )
+        # multi threading
+        EmailThread(email_obj).start()
+
         data = {
             "detail": "Please check your email and click the link to Reset your password.",
             "email": user_obj.email,
         }
-        # multi threading
-        EmailThread(email_obj).start()
         return Response(data, status.HTTP_200_OK)
 
     # get access token for user

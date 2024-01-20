@@ -1,9 +1,12 @@
 {% extends "mail_templated/base.tpl" %}
+{% load static %}
 
 {% block subject %}
 Account Activation
 {% endblock %}
 
+
 {% block html %}
 <a href="http://127.0.0.1:8000/accounts/api/v1/activation/confirm/{{token}}">Verify your user</a>
+</br>
 {% endblock %}
